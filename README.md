@@ -3,7 +3,7 @@
 Projeto de testes automatizados end-to-end utilizando **Cypress** com **BDD (Behavior Driven Development)** em português, aplicado ao site [QA Playground](https://playground-for-qa.vercel.app/playground).
 
 [![Cypress Tests](https://github.com/guilherme-evangelista/CypressExample/actions/workflows/cypress.yml/badge.svg)](https://github.com/guilherme-evangelista/CypressExample/actions/workflows/cypress.yml)
-[![GitHub Pages](https://img.shields.io/badge/Relatório-GitHub%20Pages-blue?logo=github)](https://guilherme-evangelista.github.io/CypressExample/relatorio)
+[![GitHub Pages](https://img.shields.io/badge/Relatório-GitHub%20Pages-blue?logo=github)](https://guilherme-evangelista.github.io/CypressExample/relatorio/merged-report.html)
 
 ---
 

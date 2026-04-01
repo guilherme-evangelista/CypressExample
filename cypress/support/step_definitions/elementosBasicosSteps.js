@@ -9,6 +9,7 @@ Given("que estou na tela inicial QA Playground", () => {
 });
 
 Then("a URL atual deve ser a correta", () => {
+    // Validações de estado global (como URL e Cookies) podem ficar direto no step
     cy.url().should('eq', ElementosBasicosPage.url);
 });
 
@@ -21,11 +22,11 @@ When("clico no botão duplo clique", () => {
 });
 
 Then("valido que o botão clique aqui possui {string} clique", (quantidade) => {
-    cy.contains('button', 'Clique aqui').should('contain.text', quantidade);
+    ElementosBasicosPage.validarQuantidadeCliquesSimples(quantidade);
 });
 
 Then("valido que o botão duplo clique possui {string} clique", (quantidade) => {
-    ElementosBasicosPage.btnDuploClique.should('contain', quantidade);
+    ElementosBasicosPage.validarQuantidadeCliquesDuplo(quantidade);
 });
 
 When("escrevo no campo de texto {string}", (texto) => {
@@ -33,7 +34,7 @@ When("escrevo no campo de texto {string}", (texto) => {
 });
 
 Then("valido que o campo de texto possui digitado {string}", (textoValidacao) => {
-    ElementosBasicosPage.inputTexto.should('have.value', textoValidacao);
+    ElementosBasicosPage.validarValorInput(textoValidacao);
 });
 
 When("seleciono a opcao no dropdown de framework {string}", (framework) => {
@@ -41,7 +42,7 @@ When("seleciono a opcao no dropdown de framework {string}", (framework) => {
 });
 
 Then("valido que o dropdown de framework exibe a opcao {string}", (textoEsperado) => {
-    ElementosBasicosPage.dropdown.should('contain', textoEsperado);
+    ElementosBasicosPage.validarOpcaoDropdown(textoEsperado);
 });
 
 When("altero o valor do slider para {string}", (valor) => {
@@ -49,7 +50,7 @@ When("altero o valor do slider para {string}", (valor) => {
 });
 
 Then("valido que o slider possui o valor {string}", (valor) => {
-    ElementosBasicosPage.slider.should('have.value', valor);
+    ElementosBasicosPage.validarValorSlider(valor);
 });
 
 When("clico no interruptor", () => {
@@ -57,10 +58,9 @@ When("clico no interruptor", () => {
 });
 
 Then("valido que o interruptor esta ativado", () => {
-    ElementosBasicosPage.switchInterruptor.should('have.attr', 'aria-checked', 'true');
+    ElementosBasicosPage.validarEstadoInterruptor(true);
 });
 
 Then("valido que o interruptor esta desativado", () => {
-    ElementosBasicosPage.switchInterruptor.should('have.attr', 'aria-checked', 'false');
+    ElementosBasicosPage.validarEstadoInterruptor(false);
 });
-
