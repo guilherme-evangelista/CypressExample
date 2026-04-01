@@ -15,8 +15,7 @@ module.exports = defineConfig({
     embeddedScreenshots: true,
     inlineAssets: true,
     saveAllAttempts: false,
-    html: true,
-    json: true
+    code: false
   },
   
   e2e: {

@@ -16,13 +16,12 @@ export default class BasePage {
             .dblclick();
     }
 
-
     typeText(selector, text, timeout = 8000) {
         cy.get(selector, { timeout })
             .should('be.visible')
             .and('not.be.disabled')
             .clear()
-            .type(text, { delay: 0 }); // delay 0 deixa a digitação mais rápida
+            .type(text, { delay: 0 });
     }
 
     setSliderValue(selector, value, timeout = 8000) {
