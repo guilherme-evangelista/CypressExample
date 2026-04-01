@@ -21,7 +21,7 @@ When("clico no botão duplo clique", () => {
 });
 
 Then("valido que o botão clique aqui possui {string} clique", (quantidade) => {
-    ElementosBasicosPage.btnCliqueAqui.should('contain', quantidade);
+    cy.contains('button', 'Clique aqui').should('contain.text', quantidade);
 });
 
 Then("valido que o botão duplo clique possui {string} clique", (quantidade) => {

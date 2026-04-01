@@ -16,7 +16,8 @@ class ElementosBasicosPage {
     }
 
     clicarBotaoSimples() {
-        this.btnCliqueAqui.click({ force: true });
+        cy.wait(2000);
+        this.btnCliqueAqui.click();
     }
 
     clicarBotaoDuplo() {
