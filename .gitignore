@@ -3,3 +3,5 @@ cypress/videos/
 cypress/screenshots/
 cypress/reports/
 .env
+reports/
+merged-report.json

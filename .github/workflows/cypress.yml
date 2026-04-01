@@ -33,6 +33,12 @@ jobs:
         run: npm run cy:report
         continue-on-error: true
 
+      - name: 🛠️ Compilar HTML do Relatório
+        run: |
+          npx mochawesome-merge "cypress/reports/.jsons/*.json" -o merged-report.json
+          npx marge merged-report.json --reportDir cypress/reports
+        continue-on-error: true
+
       - name: 📊 Publicar relatório no GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: always()
@@ -40,3 +46,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: cypress/reports
           destination_dir: relatorio
+
