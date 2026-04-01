@@ -6,30 +6,32 @@ const { createEsbuildPlugin } = require("@badeball/cypress-cucumber-preprocessor
 module.exports = defineConfig({
   viewportWidth: 1920,
   viewportHeight: 1080,
-  reporter: "cypress-mochawesome-reporter",  // ← adicionar
-  reporterOptions: {                          // ← adicionar
+
+  reporter: "cypress-mochawesome-reporter",
+  reporterOptions: {
     reportDir: "cypress/reports",
     charts: true,
     reportPageTitle: "QA Playground - Relatório de Testes",
     embeddedScreenshots: true,
     inlineAssets: true,
     saveAllAttempts: false,
+    html: true,
+    json: true
   },
+  
   e2e: {
     chromeWebSecurity: false,
     specPattern: "**/*.feature",
+    
     async setupNodeEvents(on, config) {
-      // Inicializa o plugin do Cucumber
+      require('cypress-mochawesome-reporter/plugin')(on);
       await addCucumberPreprocessorPlugin(on, config);
-      
-      // Configura o esbuild para ler os arquivos .feature
       on(
         "file:preprocessor",
         createBundler({
-          plugins: [createEsbuildPlugin(config)], // <-- Removido o .default e ajustada a chamada
+          plugins: [createEsbuildPlugin(config)],
         })
       );
-      
       return config;
     },
   },
