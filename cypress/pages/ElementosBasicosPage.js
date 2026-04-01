@@ -16,7 +16,7 @@ class ElementosBasicosPage {
     }
 
     clicarBotaoSimples() {
-        this.btnCliqueAqui.click();
+        this.btnCliqueAqui.click({ force: true });
     }
 
     clicarBotaoDuplo() {
