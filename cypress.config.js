@@ -20,7 +20,7 @@ module.exports = defineConfig({
   
   e2e: {
     chromeWebSecurity: false,
-    specPattern: "**/*.feature",
+    specPattern: "cypress/e2e/**/*.feature",
     
     async setupNodeEvents(on, config) {
       require('cypress-mochawesome-reporter/plugin')(on);
