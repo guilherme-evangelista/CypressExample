@@ -9,7 +9,6 @@ Given("que estou na tela inicial QA Playground", () => {
 });
 
 Then("a URL atual deve ser a correta", () => {
-    // Validações de estado global (como URL e Cookies) podem ficar direto no step
     cy.url().should('eq', ElementosBasicosPage.url);
 });
 

@@ -1,9 +1,7 @@
 import BasePage from './BasePage';
 
 class ElementosBasicosPage extends BasePage {
-    get url() { return 'https://playground-for-qa.vercel.app/playground'; }
-
-    // Dicionário de seletores em formato de string
+    
     get elements() {
         return {
             btnCliqueAqui: 'button:contains("Clique aqui")',
@@ -12,18 +10,12 @@ class ElementosBasicosPage extends BasePage {
             dropdown: '[data-testid="section-elementos-basicos"] [data-testid="select-input"]',
             slider: 'input[data-testid="range-input"]',
             switchInterruptor: 'button[data-testid="toggle-switch"]',
-            // Função que retorna o seletor dinâmico
+            
             opcaoDropdown: (nome) => `button[data-testid="select-option-${nome}"]`
         };
     }
 
-    acessarPagina() {
-        cy.visit(this.url);
-        cy.wait(1500);
-    }
-
     clicarBotaoSimples() {
-        // Usa a inteligência da BasePage para esperar o botão estar pronto
         this.clickElement(this.elements.btnCliqueAqui);
     }
 
@@ -32,7 +24,6 @@ class ElementosBasicosPage extends BasePage {
     }
 
     preencherTexto(texto) {
-        // O typeText da BasePage já lida com o .clear() de forma segura
         this.typeText(this.elements.inputTexto, texto);
     }
 
