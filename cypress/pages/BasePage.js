@@ -1,5 +1,8 @@
 export default class BasePage {
 
+    // ==========================================
+    // SETUP E NAVEGAÇÃO
+    // ==========================================
     get url() { return 'https://playground-for-qa.vercel.app/playground'; }
 
     acessarPagina() {
@@ -7,6 +10,9 @@ export default class BasePage {
         cy.wait(1500);
     }
 
+    // ==========================================
+    // INTERAÇÕES (AÇÕES)
+    // ==========================================
     clickElement(selector, timeout = 8000) {
         cy.get(selector, { timeout })
             .should('be.visible')
@@ -29,11 +35,42 @@ export default class BasePage {
             .type(text, { delay: 0 });
     }
 
+    pressKey(selector, keyCommand, timeout = 8000) {
+        cy.get(selector, { timeout })
+            .should('be.visible')
+            .type(`{${keyCommand}}`);
+    }
+
+    selectOption(selector, optionValue, timeout = 8000) {
+        cy.get(selector, { timeout })
+            .should('be.visible')
+            .select(optionValue);
+    }
+
+    checkElement(selector, timeout = 8000) {
+        cy.get(selector, { timeout })
+            .should('be.visible')
+            .check({ force: true });
+    }
+
+    uncheckElement(selector, timeout = 8000) {
+        cy.get(selector, { timeout })
+            .should('be.visible')
+            .uncheck({ force: true });
+    }
+
     setSliderValue(selector, value, timeout = 8000) {
         cy.get(selector, { timeout })
             .should('be.visible')
             .invoke('val', value)
             .trigger('change');
+    }
+
+    // ==========================================
+    // VALIDAÇÕES (ASSERÇÕES)
+    // ==========================================
+    validateUrl(expectedUrl) {
+        cy.url().should('eq', expectedUrl); 
     }
 
     validateText(selector, expectedText, timeout = 8000) {
@@ -56,5 +93,21 @@ export default class BasePage {
     validateAttribute(selector, attribute, expectedValue, timeout = 8000) {
         cy.get(selector, { timeout })
             .should('have.attr', attribute, expectedValue);
+    }
+
+    validateElementIsVisible(selector, timeout = 8000) {
+        cy.get(selector, { timeout }).should('be.visible');
+    }
+
+    validateElementDoesNotExist(selector, timeout = 8000) {
+        cy.get(selector, { timeout }).should('not.exist'); 
+    }
+
+    validateElementIsChecked(selector, timeout = 8000) {
+        cy.get(selector, { timeout }).should('be.checked');
+    }
+
+    validateElementIsNotChecked(selector, timeout = 8000) {
+        cy.get(selector, { timeout }).should('not.be.checked');
     }
 }

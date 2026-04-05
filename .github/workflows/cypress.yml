@@ -33,10 +33,11 @@ jobs:
         run: npm run cy:report
         continue-on-error: true
 
-      - name: 🛠️ Compilar HTML do Relatório
+      - name: 🛠️ Organizar Relatórios
         run: |
           npx mochawesome-merge "cypress/reports/.jsons/*.json" -o merged-report.json
           npx marge merged-report.json --reportDir cypress/reports
+          mv cypress/reports/cucumber-html-report.html cypress/reports/index.html
         continue-on-error: true
 
       - name: 📊 Publicar relatório no GitHub Pages

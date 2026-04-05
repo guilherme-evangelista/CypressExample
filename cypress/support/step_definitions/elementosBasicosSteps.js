@@ -9,7 +9,7 @@ Given("que estou na tela inicial QA Playground", () => {
 });
 
 Then("a URL atual deve ser a correta", () => {
-    cy.url().should('eq', ElementosBasicosPage.url);
+    ElementosBasicosPage.validateUrl(ElementosBasicosPage.url);
 });
 
 When("clico no botão clique aqui", () => {
