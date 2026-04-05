@@ -1,4 +1,4 @@
-name: Cypress Tests + Relatório
+name: Cypress Tests + Relatório Paralelo
 
 on:
   push:
@@ -7,15 +7,18 @@ on:
     branches: [main, master]
   workflow_dispatch:
 
-permissions:           # ← ADICIONAR ESTE BLOCO
+permissions:
   contents: write
   pages: write
   id-token: write
 
 jobs:
-  cypress-run:
+  test:
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2, 3] # 3 runners parrudos dividindo o esforço do teste
     steps:
       - name: 📥 Checkout do repositório
         uses: actions/checkout@v4
@@ -29,21 +32,58 @@ jobs:
       - name: 📦 Instalar dependências
         run: npm ci
 
-      - name: 🧪 Rodar testes Cypress
-        run: npm run cy:report
+      - name: 🧪 Rodar testes Cypress (Split Paralelo)
+        run: npm run cy:run
         continue-on-error: true
+        env:
+          SPLIT: ${{ strategy.job-total }}
+          SPLIT_INDEX: ${{ strategy.job-index }}
 
-      - name: 🛠️ Compilar HTML do Relatório
+      - name: 🧹 Evitar colisão no artefato  
+        if: always()
         run: |
-          npx mochawesome-merge "cypress/reports/.jsons/*.json" -o merged-report.json
-          npx marge merged-report.json --reportDir cypress/reports
-        continue-on-error: true
+          mkdir -p cypress/reports/cucumber-json
+          if [ -f cypress/reports/cucumber-json/cucumber-report.json ]; then
+            mv cypress/reports/cucumber-json/cucumber-report.json cypress/reports/cucumber-json/cucumber-report-${{ strategy.job-index }}.json
+          fi
 
-      - name: 📊 Publicar relatório no GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: 📤 Upload JSON parcial
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: cypress/reports
-          destination_dir: relatorio
+          name: cucumber-json-worker-${{ strategy.job-index }}
+          path: cypress/reports/cucumber-json/cucumber-report-${{ strategy.job-index }}.json
 
+  report:
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 📦 Instalar dependências
+        run: npm ci
+
+      - name: 📥 Download de todos os retalhos .json
+        uses: actions/download-artifact@v4
+        with:
+          path: cypress/reports/cucumber-json
+          pattern: cucumber-json-worker-*
+          merge-multiple: true
+
+      - name: 🛠️ Unificar Relatório do Cucumber
+        run: node generate-cucumber-report.js
+
+      - name: 📊 Publicar Relatório Consolidado no GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: cypress/reports/relatorio_consolidado
+          destination_dir: relatorio

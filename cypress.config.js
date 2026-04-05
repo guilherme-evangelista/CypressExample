@@ -2,28 +2,19 @@ const { defineConfig } = require("cypress");
 const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 const { addCucumberPreprocessorPlugin } = require("@badeball/cypress-cucumber-preprocessor");
 const { createEsbuildPlugin } = require("@badeball/cypress-cucumber-preprocessor/esbuild");
+const cypressSplit = require("cypress-split");
 
 module.exports = defineConfig({
   viewportWidth: 1920,
   viewportHeight: 1080,
 
-  reporter: "cypress-mochawesome-reporter",
-  reporterOptions: {
-    reportDir: "cypress/reports",
-    charts: true,
-    reportPageTitle: "QA Playground - Relatório de Testes",
-    embeddedScreenshots: true,
-    inlineAssets: true,
-    saveAllAttempts: false,
-    code: false
-  },
-  
+
   e2e: {
     chromeWebSecurity: false,
     specPattern: "cypress/e2e/**/*.feature",
     
     async setupNodeEvents(on, config) {
-      require('cypress-mochawesome-reporter/plugin')(on);
+      cypressSplit(on, config);
       await addCucumberPreprocessorPlugin(on, config);
       on(
         "file:preprocessor",
