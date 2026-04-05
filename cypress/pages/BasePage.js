@@ -110,4 +110,18 @@ export default class BasePage {
     validateElementIsNotChecked(selector, timeout = 8000) {
         cy.get(selector, { timeout }).should('not.be.checked');
     }
+
+    clickElementByText(text, timeout = 8000) {
+        cy.contains(text, { timeout }).should('be.visible').click();
+    }
+
+    stubWindowOpen(alias = 'windowOpen') {
+        cy.window().then((win) => {
+            cy.stub(win, 'open').as(alias);
+        });
+    }
+
+    validateStubCalledWithMatch(alias, regexMatcher) {
+        cy.get(`@${alias}`).should('be.calledWithMatch', regexMatcher);
+    }
 }

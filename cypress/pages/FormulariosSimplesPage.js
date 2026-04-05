@@ -68,8 +68,7 @@ class FormulariosSimplesPage extends BasePage {
     }
 
     validarAceiteDeTermosDesmarcado() {
-        cy.get(this.elements.checkboxAceitoOsTermos)
-            .should('not.be.checked');
+        this.validateElementIsNotChecked(this.elements.checkboxAceitoOsTermos);
     }
 
     validarCampoConfirmarSenhaVazio() {

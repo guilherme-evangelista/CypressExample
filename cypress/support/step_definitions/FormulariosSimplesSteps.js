@@ -69,4 +69,3 @@ Then("verifico que todos os campos do formulário foram resetados", () => {
     FormulariosSimplesPage.validarCampoConfirmarSenhaVazio();
     FormulariosSimplesPage.validarAceiteDeTermosDesmarcado();
 });
-

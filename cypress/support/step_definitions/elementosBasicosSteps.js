@@ -8,16 +8,32 @@ Given("que estou na tela inicial QA Playground", () => {
     ElementosBasicosPage.acessarPagina();
 });
 
-Then("a URL atual deve ser a correta", () => {
-    ElementosBasicosPage.validateUrl(ElementosBasicosPage.url);
-});
-
 When("clico no botão clique aqui", () => {
     ElementosBasicosPage.clicarBotaoSimples();
 });
 
 When("clico no botão duplo clique", () => {
     ElementosBasicosPage.clicarBotaoDuplo();
+});
+
+When("escrevo no campo de texto {string}", (texto) => {
+    ElementosBasicosPage.preencherTexto(texto);
+});
+
+When("seleciono a opcao no dropdown de framework {string}", (framework) => {
+    ElementosBasicosPage.selecionarDropdown(framework);
+});
+
+When("altero o valor do slider para {string}", (valor) => {
+    ElementosBasicosPage.alterarSlider(valor);
+});
+
+When("clico no interruptor", () => {
+    ElementosBasicosPage.clicarInterruptor();
+});
+
+Then("a URL atual deve ser a correta", () => {
+    ElementosBasicosPage.validateUrl(ElementosBasicosPage.url);
 });
 
 Then("valido que o botão clique aqui possui {string} clique", (quantidade) => {
@@ -28,32 +44,16 @@ Then("valido que o botão duplo clique possui {string} clique", (quantidade) => 
     ElementosBasicosPage.validarQuantidadeCliquesDuplo(quantidade);
 });
 
-When("escrevo no campo de texto {string}", (texto) => {
-    ElementosBasicosPage.preencherTexto(texto);
-});
-
 Then("valido que o campo de texto possui digitado {string}", (textoValidacao) => {
     ElementosBasicosPage.validarValorInput(textoValidacao);
-});
-
-When("seleciono a opcao no dropdown de framework {string}", (framework) => {
-    ElementosBasicosPage.selecionarDropdown(framework);
 });
 
 Then("valido que o dropdown de framework exibe a opcao {string}", (textoEsperado) => {
     ElementosBasicosPage.validarOpcaoDropdown(textoEsperado);
 });
 
-When("altero o valor do slider para {string}", (valor) => {
-    ElementosBasicosPage.alterarSlider(valor);
-});
-
 Then("valido que o slider possui o valor {string}", (valor) => {
     ElementosBasicosPage.validarValorSlider(valor);
-});
-
-When("clico no interruptor", () => {
-    ElementosBasicosPage.clicarInterruptor();
 });
 
 Then("valido que o interruptor esta ativado", () => {
