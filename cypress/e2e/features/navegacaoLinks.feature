@@ -36,3 +36,4 @@ Funcionalidade: QA Playground - Navegação e Links
   Cenário: CT-06 - Clicar no link externo
     Quando clico no link externo
     Então sou redirecionado para o Github do autor
+ 
