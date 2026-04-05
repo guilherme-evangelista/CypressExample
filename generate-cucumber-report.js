@@ -33,16 +33,3 @@ report.generate({
         ]
     }
 });
-
-// Após gerar o report, movemos os vídeos para dentro da mesma pasta do relatório
-try {
-    const videosDir = path.join(__dirname, 'cypress/videos');
-    const reportVideosDir = path.join(reportPath, 'videos');
-    if (fs.existsSync(videosDir)) {
-        // Node 16.7.0+ nativo
-        fs.cpSync(videosDir, reportVideosDir, { recursive: true, force: true });
-        console.log('🎬 Vídeos copiados para o relatório com sucesso!');
-    }
-} catch (err) {
-    console.warn('Falha ao copiar vídeos para o destino final:', err);
-}
