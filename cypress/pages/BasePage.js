@@ -1,8 +1,5 @@
 export default class BasePage {
 
-    // ==========================================
-    // SETUP E NAVEGAÇÃO
-    // ==========================================
     get url() { return 'https://playground-for-qa.vercel.app/playground'; }
 
     acessarPagina() {
@@ -10,9 +7,6 @@ export default class BasePage {
         cy.wait(1500);
     }
 
-    // ==========================================
-    // INTERAÇÕES (AÇÕES)
-    // ==========================================
     clickElement(selector, timeout = 8000) {
         cy.get(selector, { timeout })
             .should('be.visible')
@@ -66,9 +60,10 @@ export default class BasePage {
             .trigger('change');
     }
 
-    // ==========================================
-    // VALIDAÇÕES (ASSERÇÕES)
-    // ==========================================
+    clickElementByText(text, timeout = 8000) {
+        cy.contains(text, { timeout }).should('be.visible').click();
+    }
+
     validateUrl(expectedUrl) {
         cy.url().should('eq', expectedUrl); 
     }
@@ -111,8 +106,25 @@ export default class BasePage {
         cy.get(selector, { timeout }).should('not.be.checked');
     }
 
-    clickElementByText(text, timeout = 8000) {
-        cy.contains(text, { timeout }).should('be.visible').click();
+    mockWindowAlert(callbackFn) {
+        cy.on('window:alert', callbackFn);
+    }
+
+    mockWindowConfirm(acaoAceitar, callbackFn) {
+        cy.on('window:confirm', (texto) => {
+            if (callbackFn) callbackFn(texto);
+            return acaoAceitar;
+        });
+    }
+
+    mockWindowPrompt(textoRetorno, alias = 'windowPrompt') {
+        cy.window().then((win) => {
+            cy.stub(win, 'prompt').returns(textoRetorno).as(alias);
+        });
+    }
+
+    validarPromptChamado(alias = 'windowPrompt') {
+        cy.get(`@${alias}`).should('be.called');
     }
 
     stubWindowOpen(alias = 'windowOpen') {
