@@ -2,9 +2,6 @@ import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import ElementosBasicosPage from "../../pages/ElementosBasicosPage";
 
 Given("que estou na tela inicial QA Playground", () => {
-    cy.clearAllCookies();
-    cy.clearLocalStorage();
-    cy.clearAllSessionStorage();
     ElementosBasicosPage.acessarPagina();
 });
 
