@@ -3,7 +3,7 @@
 Projeto de testes automatizados end-to-end utilizando **Cypress** com **BDD (Behavior Driven Development)** em português, aplicado ao site [QA Playground](https://playground-for-qa.vercel.app/playground).
 
 [![Cypress Tests](https://github.com/guilherme-evangelista/CypressExample/actions/workflows/cypress.yml/badge.svg)](https://github.com/guilherme-evangelista/CypressExample/actions/workflows/cypress.yml)
-[![GitHub Pages](https://img.shields.io/badge/Relatório-GitHub%20Pages-blue?logo=github)](https://guilherme-evangelista.github.io/CypressExample/relatorio/merged-report.html)
+[![GitHub Pages](https://img.shields.io/badge/Relatório-Cucumber%20BDD-brightgreen?logo=cucumber)](https://guilherme-evangelista.github.io/CypressExample/relatorio/index.html)
 
 ---
 
@@ -15,30 +15,32 @@ Projeto de testes automatizados end-to-end utilizando **Cypress** com **BDD (Beh
 | [@badeball/cypress-cucumber-preprocessor](https://github.com/badeball/cypress-cucumber-preprocessor) | ^24 | Suporte ao Gherkin/BDD |
 | [@bahmutov/cypress-esbuild-preprocessor](https://github.com/bahmutov/cypress-esbuild-preprocessor) | ^2 | Compilação dos arquivos `.feature` |
 | [esbuild](https://esbuild.github.io/) | ^0.27 | Bundler de alta performance |
-| [cypress-mochawesome-reporter](https://github.com/LironEr/cypress-mochawesome-reporter) | latest | Geração de relatório HTML |
-| GitHub Actions | — | Pipeline de CI/CD |
+| [cypress-split](https://github.com/bahmutov/cypress-split) | ^1 | Divisão de execução paralela |
+| [multiple-cucumber-html-reporter](https://github.com/WasiqB/multiple-cucumber-html-reporter) | ^3 | Consolidão de relatórios BDD |
+| GitHub Actions | — | Pipeline de CI/CD Paralelizado |
 | GitHub Pages | — | Publicação automática do relatório |
 
 ---
 
-## 📁 Estrutura do projeto
+## 📁 Estrutura principal do projeto
 
 ```
 CypressExample/
 ├── .github/
 │   └── workflows/
-│       └── cypress.yml              # Pipeline de CI/CD
+│       └── cypress.yml              # Pipeline de CI/CD Paralela
 ├── cypress/
 │   ├── e2e/
 │   │   └── features/
-│   │       └── elementosBasicos.feature   # Cenários BDD em português
+│   │       └── elementosBasicos.feature # Cenários em Gherkin
 │   ├── pages/
-│   │   └── ElementosBasicosPage.js        # Page Object Model
+│   │   ├── BasePage.js
+│   │   └── ElementosBasicosPage.js        
 │   └── support/
 │       ├── step_definitions/
-│       │   └── elementosBasicosSteps.js   # Implementação dos steps
+│       │   └── ElementosBasicosSteps.js # Mapas Gherkin -> Cypress
 │       └── e2e.js
-├── .cypress-cucumber-preprocessorrc.json
+├── generate-cucumber-report.js      # Combinador de relatórios
 ├── cypress.config.js
 └── package.json
 ```
@@ -66,72 +68,46 @@ npm install
 # Modo interativo (UI do Cypress)
 npx cypress open
 
-# Modo headless (terminal)
-npx cypress run
-
-# Modo headless com geração de relatório
-npm run cy:report
+# Modo headless (terminal via pipeline manual)
+npm run cy:run
 ```
 
 ---
 
-## 🧩 Cenários de teste
+## 🏗️ Padrão Page Object Model + Custom Actions
 
-Os cenários estão escritos em **Gherkin com linguagem portuguesa** e cobrem os elementos básicos do QA Playground
-
-### Exemplo de cenário
-
-```gherkin
-# language: pt
-Funcionalidade: QA Playground - Elementos Básicos
-
-  Contexto:
-    Dado que estou na tela inicial QA Playground
-
-  Cenário: CT-04 - Interação com o dropdown customizado
-    Quando seleciono a opcao no dropdown de framework "robot"
-    Então valido que o dropdown de framework exibe a opcao "Robot Framework"
-```
-
----
-
-## 🏗️ Padrão Page Object Model (POM)
-
-O projeto utiliza **Page Object Model** para separar a lógica de seleção de elementos da lógica dos testes, facilitando manutenção e reuso.
+O projeto se baseia numa super-classe **BasePage** contendo todas as funções genéricas e verificações embutidas (`validateUrl`, `selectOption`, `checkElement`), as quais são estendidas e herdadas pelas classes específicas de *Page*.
 
 ```js
-// cypress/pages/ElementosBasicosPage.js
-class ElementosBasicosPage {
-    get url() { return 'https://playground-for-qa.vercel.app/playground'; }
-    get btnCliqueAqui() { return cy.contains('button', 'Clique aqui'); }
-    // ...
+// BasePage.js implementando validações robustas:
+validateElementIsVisible(selector, timeout = 8000) {
+    cy.get(selector, { timeout }).should('be.visible');
 }
-export default new ElementosBasicosPage();
 ```
 
 ---
 
-## ⚙️ Pipeline CI/CD
+## ⚙️ Pipeline CI/CD: Múltiplas Máquinas (Parallel)
 
-A cada `push` ou `pull request` na branch `main`, o GitHub Actions executa automaticamente:
+A cada `push` ou `pull request` na branch `main`, o GitHub Actions executa uma matriz automatizada utilizando o **cypress-split**.
 
+A pipeline sob a pasta `.github/workflows/` inicia **vários instâncias (containers)** de testes de forma completamente distribuída:
 ```
-push → Checkout → Setup Node → npm ci → Cypress run → Relatório → GitHub Pages
+[Runner 1] → Roda Fração 1
+[Runner 2] → Roda Fração 2
+[Runner 3] → Roda Fração 3
 ```
 
-O relatório é publicado automaticamente em:
-**[https://guilherme-evangelista.github.io/CypressExample/relatorio](https://guilherme-evangelista.github.io/CypressExample/relatorio)**
+Cada *runner* despeja um log parcial `.json`. Após todos terminarem, um Job consolidador entra em cena rodando o script `generate-cucumber-report.js` que formata um único painel e entrega pro Pages.
+
+O relatório final é publicado em:
+**[https://guilherme-evangelista.github.io/CypressExample/relatorio](https://guilherme-evangelista.github.io/CypressExample/relatorio/)** *(que renderiza por debaixo dos panos o nosso index.html consolidado!)*
 
 ---
 
-## 📊 Relatório de testes
+## 📊 Relatório Nativo BDD (Cucumber HTML Report)
 
-O relatório é gerado com **Mochawesome** e inclui:
-
-- ✅ Status de cada cenário (passou/falhou)
-- 📸 Screenshots automáticos em caso de falha
-- 📈 Gráficos de resultado
-- 🕐 Tempo de execução por teste
+Todos os resíduos como hooks de antes/depois ou logs do mochawesome foram deixados para trás e este projeto abraça o layout limpo. O `multiple-cucumber-html-reporter` gera visualizações por Funcionalidades e Cenários estritamente alinhados aos Mapas *Gherkin*.
 
 ---
 
@@ -151,4 +127,4 @@ Este projeto está sob a licença ISC. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ---
 
-> Desenvolvido por [Guilherme Evangelista](https://github.com/guilherme-evangelista) 🚀
+> Desenvolvido e paralelizado por [Guilherme Evangelista](https://github.com/guilherme-evangelista) 🚀

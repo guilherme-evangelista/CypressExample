@@ -5,5 +5,9 @@
   "html": {
     "enabled": true,
     "output": "cypress/reports/cucumber-html-report.html"
+  },
+  "json": {
+    "enabled": true,
+    "output": "cypress/reports/cucumber-json/cucumber-report.json"
   }
 }
