@@ -6,8 +6,17 @@ export default class BasePage {
     get url() { return 'https://playground-for-qa.vercel.app/playground'; }
 
     acessarPagina() {
+        cy.clearAllCookies();
+        cy.clearLocalStorage();
+        cy.clearAllSessionStorage();
         cy.visit(this.url);
         cy.wait(1500);
+    }
+
+    stubWindowOpen(alias = 'windowOpen') {
+        cy.window().then((win) => {
+            cy.stub(win, 'open').as(alias);
+        });
     }
 
     // ==========================================
@@ -66,6 +75,40 @@ export default class BasePage {
             .trigger('change');
     }
 
+    clickElementByText(text, timeout = 8000) {
+        cy.contains(text, { timeout }).should('be.visible').click();
+    }
+
+    // ==========================================
+    // ALERTAS E DIÁLOGOS (WINDOW)
+    // ==========================================
+    acceptAlertOrConfirm() {
+        cy.on('window:alert', () => true);
+        cy.on('window:confirm', () => true);
+    }
+
+    cancelConfirm() {
+        cy.on('window:confirm', () => false);
+    }
+
+    typeInPrompt(textToType) {
+        cy.window().then((win) => {
+            cy.stub(win, 'prompt').returns(textToType);
+        });
+    }
+
+    validateAlertText(expectedText) {
+        cy.on('window:alert', (text) => {
+            expect(text).to.contain(expectedText);
+        });
+    }
+
+    validateConfirmText(expectedText) {
+        cy.on('window:confirm', (text) => {
+            expect(text).to.contain(expectedText);
+        });
+    }
+
     // ==========================================
     // VALIDAÇÕES (ASSERÇÕES)
     // ==========================================
@@ -99,6 +142,14 @@ export default class BasePage {
         cy.get(selector, { timeout }).should('be.visible');
     }
 
+    validateElementExists(selector, timeout = 8000) {
+        cy.get(selector, { timeout }).should('exist');
+    }
+
+    validateTextExists(expectedText, options = {}, timeout = 8000) {
+        cy.contains(expectedText, { ...options, timeout }).should('exist');
+    }
+
     validateElementDoesNotExist(selector, timeout = 8000) {
         cy.get(selector, { timeout }).should('not.exist'); 
     }
@@ -109,16 +160,6 @@ export default class BasePage {
 
     validateElementIsNotChecked(selector, timeout = 8000) {
         cy.get(selector, { timeout }).should('not.be.checked');
-    }
-
-    clickElementByText(text, timeout = 8000) {
-        cy.contains(text, { timeout }).should('be.visible').click();
-    }
-
-    stubWindowOpen(alias = 'windowOpen') {
-        cy.window().then((win) => {
-            cy.stub(win, 'open').as(alias);
-        });
     }
 
     validateStubCalledWithMatch(alias, regexMatcher) {

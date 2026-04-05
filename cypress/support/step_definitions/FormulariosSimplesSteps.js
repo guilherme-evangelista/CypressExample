@@ -1,9 +1,8 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import FormulariosSimplesPage from "../../pages/FormulariosSimplesPage";
-import ElementosBasicosPage from "../../pages/ElementosBasicosPage";
 
 Given("que estou na aba de Formulários Simples", () => {
-    ElementosBasicosPage.acessarPagina();
+    FormulariosSimplesPage.acessarPagina();
     FormulariosSimplesPage.clicarAbaFormulariosSimples();
 });
 
