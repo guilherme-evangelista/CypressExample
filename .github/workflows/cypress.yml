@@ -54,6 +54,14 @@ jobs:
           name: cucumber-json-worker-${{ strategy.job-index }}
           path: cypress/reports/cucumber-json/cucumber-report-${{ strategy.job-index }}.json
 
+      - name: 🎥 Upload de Vídeos (Parcial)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-videos-worker-${{ strategy.job-index }}
+          path: cypress/videos/**/*.mp4
+          retention-days: 1
+
   report:
     needs: test
     runs-on: ubuntu-latest
@@ -76,6 +84,13 @@ jobs:
         with:
           path: cypress/reports/cucumber-json
           pattern: cucumber-json-worker-*
+          merge-multiple: true
+
+      - name: 🎥 Download de todos os vídeos parciais
+        uses: actions/download-artifact@v4
+        with:
+          path: cypress/videos
+          pattern: cypress-videos-worker-*
           merge-multiple: true
 
       - name: 🛠️ Unificar Relatório do Cucumber
