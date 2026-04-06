@@ -1,8 +1,5 @@
 export default class BasePage {
 
-    // ==========================================
-    // SETUP E NAVEGAÇÃO
-    // ==========================================
     get url() { return 'https://playground-for-qa.vercel.app/playground'; }
 
     acessarPagina() {
@@ -19,9 +16,6 @@ export default class BasePage {
         });
     }
 
-    // ==========================================
-    // INTERAÇÕES (AÇÕES)
-    // ==========================================
     clickElement(selector, timeout = 8000) {
         cy.get(selector, { timeout })
             .should('be.visible')
@@ -79,9 +73,6 @@ export default class BasePage {
         cy.contains(text, { timeout }).should('be.visible').click();
     }
 
-    // ==========================================
-    // ALERTAS E DIÁLOGOS (WINDOW)
-    // ==========================================
     acceptAlertOrConfirm() {
         cy.on('window:alert', () => true);
         cy.on('window:confirm', () => true);
@@ -109,9 +100,6 @@ export default class BasePage {
         });
     }
 
-    // ==========================================
-    // VALIDAÇÕES (ASSERÇÕES)
-    // ==========================================
     validateUrl(expectedUrl) {
         cy.url().should('eq', expectedUrl); 
     }
@@ -125,6 +113,11 @@ export default class BasePage {
     validateTextOnScreen(expectedText, timeout = 8000) {
         cy.contains(expectedText, { timeout })
             .should('be.visible');
+    }
+
+    validateTextDoesNotExist(expectedText, timeout = 8000) {
+        cy.contains(expectedText, { timeout })
+            .should('not.exist');
     }
 
     validateValue(selector, expectedValue, timeout = 8000) {
