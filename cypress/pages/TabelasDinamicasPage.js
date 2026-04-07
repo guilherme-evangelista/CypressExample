@@ -103,37 +103,17 @@ class TabelasDinamicasPage extends BasePage {
 
     validarUsuariosOrdenadosPor(coluna) {
         switch (coluna) {
-            case "nome":
-                cy.get('td[data-testid^="cell-name-"]')
-                    .then(($cells) => {
-                        const textosNaTela = Cypress.$.makeArray($cells).map(cell => cell.innerText.trim());
-                        const textosOrdenadosEsperados = [...textosNaTela].sort((a, b) => a.localeCompare(b, 'pt-BR'));
-                        expect(textosNaTela).to.deep.equal(textosOrdenadosEsperados);
-                    });
+            case "nomes":
+                this.validateTextsInElementsAreSortedByAscendingOrder('td[data-testid^="cell-name-"]');
                 break;
-            case "email":
-                cy.get('td[data-testid^="cell-email-"]')
-                    .then(($cells) => {
-                        const textosNaTela = Cypress.$.makeArray($cells).map(cell => cell.innerText.trim());
-                        const textosOrdenadosEsperados = [...textosNaTela].sort((a, b) => a.localeCompare(b, 'pt-BR'));
-                        expect(textosNaTela).to.deep.equal(textosOrdenadosEsperados);
-                    });
+            case "emails":
+                this.validateTextsInElementsAreSortedByAscendingOrder('td[data-testid^="cell-email-"]');
                 break;
-            case "cargo":
-                cy.get('tbody tr td:nth-child(4)')
-                    .then(($cells) => {
-                        const textosNaTela = Cypress.$.makeArray($cells).map(cell => cell.innerText.trim());
-                        const textosOrdenadosEsperados = [...textosNaTela].sort((a, b) => a.localeCompare(b, 'pt-BR'));
-                        expect(textosNaTela).to.deep.equal(textosOrdenadosEsperados);
-                    });
+            case "cargos":
+                this.validateTextsInElementsAreSortedByAscendingOrder('tbody tr td:nth-child(4)');
                 break;
             case "status":
-                cy.get('tbody tr td:nth-child(5)')
-                    .then(($cells) => {
-                        const textosNaTela = Cypress.$.makeArray($cells).map(cell => cell.innerText.trim());
-                        const textosOrdenadosEsperados = [...textosNaTela].sort((a, b) => a.localeCompare(b, 'pt-BR'));
-                        expect(textosNaTela).to.deep.equal(textosOrdenadosEsperados);
-                    });
+                this.validateTextsInElementsAreSortedByAscendingOrder('tbody tr td:nth-child(5)');
                 break;
             default:
                 throw new Error(`Coluna inválida: ${coluna}`);
