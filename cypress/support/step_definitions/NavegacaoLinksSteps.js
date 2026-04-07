@@ -1,7 +1,8 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import NavegacaoLinksPage from "../../pages/NavegacaoLinksPage";
 
-Given("acesso a aba de navegacao e links", () => {
+Given("que estou na aba de navegacao e links", () => {
+    NavegacaoLinksPage.acessarPagina();
     NavegacaoLinksPage.clicarAbaNavegacao();
 });
 

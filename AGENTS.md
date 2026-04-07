@@ -33,7 +33,7 @@ O projeto utiliza um padrão POM aprimorado focado em reutilização e estabilid
 
 ### 3.2. Boas Práticas dentro dos "Step Definitions"
 - **Regra de Ouro**: É expressamente **PROIBIDO** o uso e a manipulação direta do encadeamento `cy.*` (como `cy.get(...)` ou `cy.contains(...)`) nos arquivos do tipo *Steps*.
-- **O que é permitido no Step**: Ações puramente sistemáticas como reiniciar contextos/sessão (ex: usar `cy.clearAllCookies()` ou limpar cache no caso inicial do `Given`).
+- **O que é permitido no Step**: Chamar os métodos da classe Page referenciada.
 - **Ordenação dos Passos (Steps)**: O código dentro dos arquivos de passos (arquivos `.js` de Steps) deve ser organizado mantendo uma sequência lógica contínua para fins de manutenção e legibilidade: primeiro declarar todos os passos do tipo `Given`, seguidos por todos os passos do tipo `When` e fechando com todos os passos do tipo `Then` no final do arquivo.
 - **Passos Vazios**: É estritamente proibido possuir passos (Steps) vazios nos arquivos `.js`. Toda validação ou ação declarada na Feature (Gherkin) deve corresponder e injetar uma ação/asserção real do Cypress, sem pular ou criar blocos apenas para leitura de texto.
 

@@ -1,7 +1,8 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import WaitsESincronizacaoPage from "../../pages/WaitsESincronizacaoPage";
 
-Given("acesso a aba de waits e sincronizacao", () => {
+Given("que estou na aba de waits e sincronizacao", () => {
+    WaitsESincronizacaoPage.acessarPagina();
     WaitsESincronizacaoPage.clicarAbaWaitsESincronizacao();
 });
 

@@ -2,8 +2,7 @@
 Funcionalidade: QA Playground - Waits e Sincronização
 
   Contexto:
-    Dado que estou na tela inicial QA Playground
-    E acesso a aba de waits e sincronizacao
+    Dado que estou na aba de waits e sincronizacao
 
   Cenário: CT-01 - Validar texto exibido apos clicar no botao iniciar contagem
     E valido que o texto "Texto inicial" é exibido na tela

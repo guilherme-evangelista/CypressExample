@@ -158,4 +158,19 @@ export default class BasePage {
     validateStubCalledWithMatch(alias, regexMatcher) {
         cy.get(`@${alias}`).should('be.calledWithMatch', regexMatcher);
     }
+
+    validateElementDoesNotContainText(selector, text, timeout = 8000) {
+        cy.get(selector, { timeout })
+            .should('not.contain.text', text);
+    }
+
+    validateQuantityOfElements(selector, expectedQuantity, timeout = 8000) {
+        cy.get(selector, { timeout }).should('have.length', expectedQuantity);
+    }
+    
+    validateInnerTextOfElement(selector, expectedText, timeout = 8000) {
+        cy.get(selector, { timeout })
+            .should('have.prop', 'innerText')
+            .and('equal', expectedText);
+    }
 }
