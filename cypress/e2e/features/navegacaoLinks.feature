@@ -2,8 +2,7 @@
 Funcionalidade: QA Playground - Navegação e Links
 
   Contexto:
-    Dado que estou na tela inicial QA Playground
-    E acesso a aba de navegacao e links
+    Dado que estou na aba de navegacao e links
 
   Cenário: CT-01 - Validar estado inicial da seção de navegação
     Então valido que a seção principal de navegação está visível
