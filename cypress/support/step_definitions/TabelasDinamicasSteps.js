@@ -40,20 +40,9 @@ Then("verifico que a tabela não exibe nenhum resultado", () => {
     TabelasDinamicasPage.validarTamanhoDaTabela(0);
 });
 
-Then("a listagem de usuários deve ser reordenada com os nomes em ordem alfabética", () => {
-    TabelasDinamicasPage.validarUsuariosOrdenadosPor("nome");
-});
-
-Then("a listagem de usuários deve ser reordenada com os emails em ordem alfabética", () => {
-    TabelasDinamicasPage.validarUsuariosOrdenadosPor("email");
-});
-
-Then("a listagem de usuários deve ser reordenada com os cargos em ordem alfabética", () => {
-    TabelasDinamicasPage.validarUsuariosOrdenadosPor("cargo");
-});
-
-Then("a listagem de usuários deve ser reordenada com os status em ordem alfabética", () => {
-    TabelasDinamicasPage.validarUsuariosOrdenadosPor("status");
+Then("a listagem de usuários deve ser reordenada com os {string} em ordem alfabética", (coluna) => {
+    TabelasDinamicasPage.validarUsuariosOrdenadosPor(coluna);
+    TabelasDinamicasPage.validarTamanhoDaTabela(5)
 });
 
 Then("o rodapé deve exibir a mensagem {string}", (mensagem) => {

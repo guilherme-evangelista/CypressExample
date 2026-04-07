@@ -18,19 +18,19 @@ Funcionalidade: QA Playground - Tabelas Dinâmicas
 
   Cenário: CT-03 - Ordenar tabela por Nome
     Quando clico para ordenar pela coluna "Nome"
-    Então a listagem de usuários deve ser reordenada com os nomes em ordem alfabética
+    Então a listagem de usuários deve ser reordenada com os "nomes" em ordem alfabética
 
   Cenário: CT-03.1 - Ordenar tabela por Email
     Quando clico para ordenar pela coluna "Email"
-    Então a listagem de usuários deve ser reordenada com os emails em ordem alfabética
+    Então a listagem de usuários deve ser reordenada com os "emails" em ordem alfabética
 
   Cenário: CT-03.2 - Ordenar tabela por Cargo
     Quando clico para ordenar pela coluna "Cargo"
-    Então a listagem de usuários deve ser reordenada com os cargos em ordem alfabética
+    Então a listagem de usuários deve ser reordenada com os "cargos" em ordem alfabética
 
   Cenário: CT-03.3 - Ordenar tabela por Status
     Quando clico para ordenar pela coluna "Status"
-    Então a listagem de usuários deve ser reordenada com os status em ordem alfabética
+    Então a listagem de usuários deve ser reordenada com os "status" em ordem alfabética
 
   Cenário: CT-04 - Selecionar um usuário específico e validar contagem
     Quando seleciono o primeiro usuário da lista

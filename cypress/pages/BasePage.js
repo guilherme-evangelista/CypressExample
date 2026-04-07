@@ -173,4 +173,13 @@ export default class BasePage {
             .should('have.prop', 'innerText')
             .and('equal', expectedText);
     }
+
+    validateTextsInElementsAreSortedByAscendingOrder(selector, timeout = 8000) {
+        cy.get(selector, { timeout })
+            .then(($cells) => {
+                const screenTexts = Cypress.$.makeArray($cells).map(cell => cell.innerText.trim());
+                const expectedSortedTexts = [...screenTexts].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+                expect(screenTexts).to.deep.equal(expectedSortedTexts);
+            });
+    }
 }
